@@ -25,7 +25,29 @@ Route::resource('orders', 'OrderController');
 
 Route::resource('payments', 'PaymentController');
 
-Route::get('myorders', 'OrderController@myorders');
-
-
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('user/profile', function () {
+    return 'Hello you are in user profile';
+})->name('hello');
+
+
+Route::get('/hello', function () {
+    $url = route('hello');
+
+    return redirect()->route('hello');
+});
+
+Route::get('user/{id}/profile', function ($id) {
+    $url = route('profile', ['id' => $id]);
+    return $url;
+})->name('profile');
+
+Route::Get('/', function () {
+    return view('hello');
+});
+
+Route::get('student/details', function () {
+    $url = route('student.details');
+    return $url;
+})->name('student.details');
