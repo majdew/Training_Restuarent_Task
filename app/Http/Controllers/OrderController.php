@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Order;
 use App\Product;
-use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,8 +17,8 @@ class OrderController extends Controller
     public function index()
     {
         //
-        $orders = Order::all();
-        return view('order', compact('orders'));
+        $orders = Order::paginate(5);
+        return view('orders.index', compact('orders'));
     }
 
     /**
@@ -30,7 +29,7 @@ class OrderController extends Controller
     public function create()
     {
         $products = Product::all();
-        return view('orderitem', compact('products'));
+        return view('orders.create', compact('products'));
     }
 
     /**
@@ -43,38 +42,48 @@ class OrderController extends Controller
     {
         //
 
-
-
         $order = new Order($request->all());
+
+        $price = $order->product->price;
+        $quantity = $order->ordered_quantity;
+        $total = $price * $quantity;
+
         $user = auth()->user();
+
+        // orders() deals with relation function , orders deals with collection of function
         $user->orders()->save($order);
-        return redirect()->back();
+        return redirect()->route("orders.index")->with("Order created Sucessfully !") ;
+                        
     }
 
     /**
-     * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Https\Response
      */
     public function show($id)
     {
         //
+
+        $order = Order::find($id);
+        return view('orders.show', compact( 'order'));
+
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
+     * Display the specified resource.
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
         //
-        $products = Product :: all();
-        $order =Order::find($id);
+        $products = Product::all();
+        $order = Order::find($id);
 
-        return view('editorder' , compact('products' , 'order'));
+        return view('orders.edit', compact('products', 'order'));
     }
 
     /**
@@ -89,8 +98,9 @@ class OrderController extends Controller
         //
         $order = Order::find($id);
         $order->update($request->all());
-        return redirect()->action('OrderController@index')->with('success', 'Updated successfully!');;
-  
+        return redirect()
+                        ->route('orders.index')
+                        ->with('success', 'Updated successfully!');
     }
 
     /**
@@ -106,9 +116,7 @@ class OrderController extends Controller
         $order = Order::find($id);
 
         $order->delete();
-        return redirect()->back()-> with('success', 'Deleted successfully!');
-
-
+        return redirect()->back()->with('success', 'Deleted successfully!');
     }
 
     public function myorders()
@@ -122,4 +130,5 @@ class OrderController extends Controller
         $products = Product::all();
         return view('orderitem', compact('products'));
     }
+
 }

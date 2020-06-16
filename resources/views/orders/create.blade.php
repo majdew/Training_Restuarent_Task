@@ -6,13 +6,26 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">Order</div>
+                @if(count($errors) > 0 )
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <ul class="p-0 m-0" style="list-style: none;">
+                        @foreach($errors->all() as $error)
+                        <li>{{$error}}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
 
                 <div class="card-body">
                     {!! Form::open( ['route' => 'orders.store' , 'files' => true])!!}
                     <div class="form-group row">
                         {!! Form::label('product', 'Product' , ['class'=>"col-md-4 col-form-label text-md-right"]) !!}
                         <div class="col-md-6">
-                            {!! Form::select('product_id',$products->pluck('name', 'id') , 2 ,[ 'class'=>"form-control"] )!!}
+                            {!! Form::select('product_id',$products->pluck('name', 'id') , 2 ,[ 'class'=>"form-control"]
+                            )!!}
                         </div>
                     </div>
 
@@ -20,7 +33,9 @@
                         <label for="ordered_qauntity" class="col-md-4 col-form-label text-md-right">Quantity</label>
 
                         <div class="col-md-6">
-                            <input id="ordered_quantity" class="form-control @error('ordered_quantity') is-invalid @enderror" name='ordered_quantity' value="" required autofocus>
+                            <input id="ordered_quantity"
+                                class="form-control @error('ordered_quantity') is-invalid @enderror"
+                                name='ordered_quantity' value="" required autofocus>
 
                             @error('ordered_quantity')
                             <span class="invalid-feedback" role="alert">
@@ -34,7 +49,7 @@
                     <div class="form-group row mb-0">
                         <div class="col-md-8 offset-md-4">
                             <button type="submit" class="btn btn-primary">
-                                Order
+                                Pay 
                             </button>
                         </div>
                     </div>

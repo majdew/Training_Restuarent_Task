@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Payment;
 
 class PaymentController extends Controller
 {
@@ -15,7 +17,7 @@ class PaymentController extends Controller
     public function index()
     {
         //
-        $payments = \App\Payment::all();
+        $payments = Payment::all();
         return view('payment', compact('payments'));
     }
 
@@ -24,9 +26,9 @@ class PaymentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
-        //
+     
     }
 
     /**
@@ -83,6 +85,10 @@ class PaymentController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function pay($id){
+        
     }
 
 }

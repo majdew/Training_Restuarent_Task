@@ -1,0 +1,12 @@
+{
+    "editor.rulers": [
+
+    ],
+    "atomKeymap.promptV3Features": false,
+    "intelephense.files.associations": [
+    
+        "*.php",
+        "*.phtml"
+    ],
+  
+}
